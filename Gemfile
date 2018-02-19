@@ -50,6 +50,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 gem 'bootstrap', '~> 4.0.0'
+gem 'devise'
 gem 'popper_js'
 gem 'simple_form'
 

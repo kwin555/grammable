@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Grammable</title>
     <%= csrf_meta_tags %>
 
@@ -9,6 +11,19 @@
   </head>
 
   <body>
+    <% if current_user %>
+      You're signed in as <%= current_user.email %>
+      <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+    <% else  %>
+      <%= link_to "Sign In", new_user_session_path %>
+      <%= link_to "Sign Out", new_user_registration_path %>
+    <% end %>
+    <% if notice.present? %>
+      <p class="alert alert-info"><%= notice %></p>
+    <% end %>
+    <% if alert.present? %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
     <%= yield %>
   </body>
 </html>
