@@ -1,21 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
-  describe "grams#index action" do
-    it "should successfully show the page" do
+  describe 'grams#index action' do
+    it 'should successfully show the page' do
       get :index
       expect(response).to have_http_status(:success)
     end
   end
 
 
-  describe "grams#new action" do
-    it "should successfully show the new form" do
-      user = User.create(
-        email:                 'fakeuser@gmail.com',
-        password:              'secretPassword',
-        password_confirmation: 'secretPassword'
-      )
+  describe 'grams#new action' do
+    it 'should successfully show the new form' do
+      user = FactoryBot.create(:user)
       sign_in user
 
       get :new
@@ -24,18 +20,14 @@ RSpec.describe GramsController, type: :controller do
   end
 
 
-  describe "grams#create action" do
-    it "should require user to be logged in" do
+  describe 'grams#create action' do
+    it 'should require user to be logged in' do
       post :create, params: { gram: {message: "hello" } }
       expect(response).to redirect_to new_user_session_path
     end
 
-    it "should successfully create a new gram in our database" do
-      user = User.create(
-        email:                 'fakeuser@gmail.com',
-        password:              'secretPassword',
-        password_confirmation: 'secretPassword'
-      )
+    it 'should successfully create a new gram in our database' do
+      user = FactoryBot.create(:user)
       sign_in user
 
       post :create, params: { gram: { message: 'Hello!' } }
@@ -45,12 +37,8 @@ RSpec.describe GramsController, type: :controller do
       expect(gram.message).to eq("Hello!")
     end
 
-    it "should properly deal with validation errors" do
-      user = User.create(
-        email:                 'fakeuser@gmail.com',
-        password:              'secretPassword',
-        password_confirmation: 'secretPassword'
-      )
+    it 'should properly deal with validation errors' do
+      user = FactoryBot.create(:user)
       sign_in user
 
       gram_count = Gram.count
