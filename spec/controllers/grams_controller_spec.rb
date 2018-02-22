@@ -2,6 +2,20 @@ require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
 
+  describe 'grams#destroy action' do
+    it 'should allow a user to destroy a gram' do
+      gram = FactoryBot.create(:gram)
+      delete :destroy, params: { id: gram.id }
+      expect(response).to redirect_to root_path
+      gram = Gram.find_by_id(gram.id)
+      expect(gram).to eq nil
+    end
+
+    it 'should return a 404 message if we cannot find a gram with the id that is specfied' do
+      delete :destroy, params: { id: 'SPACEDUCK' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
   describe 'grams#update action' do
     it 'should allow users to successfully update grams' do
       gram = FactoryBot.create(:gram, message: 'Initial Value')
@@ -40,17 +54,17 @@ RSpec.describe GramsController, type: :controller do
 
   describe 'grams#show action' do
 
-  it 'should successfully show the page if the gram is found' do
-    gram = FactoryBot.create(:gram)
-    get :show, params: { id: gram.id }
-    expect(response).to have_http_status(:success)
-  end
+    it 'should successfully show the page if the gram is found' do
+      gram = FactoryBot.create(:gram)
+      get :show, params: { id: gram.id }
+      expect(response).to have_http_status(:success)
+    end
 
-  it 'should return a 404 error if the gram is not found' do
-    get :show, params: { id: 'TACOCAT'}
-    expect(response).to have_http_status(:not_found)
+    it 'should return a 404 error if the gram is not found' do
+      get :show, params: { id: 'TACOCAT'}
+      expect(response).to have_http_status(:not_found)
+    end
   end
-end
 
   describe 'grams#index action' do
     it 'should successfully show the page' do
